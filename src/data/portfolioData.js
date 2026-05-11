@@ -159,7 +159,7 @@ export const projects = [
     description: "A multivendor B2B2B SaaS platform for agencies to manage clients, funnels, leads, and billing.",
     tags: ["Next.js", "Node.js", "Stripe", "Shadcn"],
     problemSolved: "Agencies use separate tools for client management, funnels, leads, and billing, creating operational complexity.",
-    backendHighlight: "Built unique Accounts Architecture, Stripe subscriptions, Stripe Connect (charge application fee per sale), custom checkouts, and project management integrations.",
+    backendHighlight: "Implemented unique Accounts Architecture, Stripe subscriptions, Stripe Connect (charge application fee per sale), custom checkouts, and project management integrations.",
     liveDemo: "https://bildit.vercel.app",
     codeUrl: ""
   },
