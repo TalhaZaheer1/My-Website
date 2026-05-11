@@ -43,7 +43,7 @@ export default function Skills() {
 
       <div className="space-y-12">
         <SkillCategory title="backend_core" items={skills.backend} />
-        <SkillCategory title="frontend_ui" items={skills.frontend} />
+        <SkillCategory title="frontend/fullstack" items={skills.frontend} />
         <SkillCategory title="databases_orms" items={skills.databases} />
         <SkillCategory title="devops_tooling" items={skills.devops} />
         <SkillCategory title="system_design" items={skills.systemDesign} />

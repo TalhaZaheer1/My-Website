@@ -1,16 +1,24 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaTimes, FaSpinner } from 'react-icons/fa';
 
 export default function Carousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLightboxLoading, setIsLightboxLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setIsLightboxLoading(true);
+  }, [currentIndex]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
@@ -25,6 +33,12 @@ export default function Carousel({ images }) {
   return (
     <>
       <div className="relative w-full aspect-video bg-[#050505] overflow-hidden group flex items-center justify-center">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+            <FaSpinner className="animate-spin text-primary-500" size={24} />
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.img
             key={currentIndex}
@@ -35,7 +49,8 @@ export default function Carousel({ images }) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="w-full h-auto block cursor-pointer"
+            onLoad={() => setIsLoading(false)}
+            className={`w-full h-auto block cursor-pointer transition-[filter] duration-300 ${isLoading ? 'blur-md' : 'blur-0'}`}
             onClick={(e) => { e.stopPropagation(); setIsLightboxOpen(true); }}
           />
         </AnimatePresence>
@@ -44,19 +59,19 @@ export default function Carousel({ images }) {
           <>
             <button
               onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-black/50 text-white border border-[#333] hover:border-primary-500 hover:text-primary-500 transition-colors opacity-100 md:opacity-0 group-hover:opacity-100"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-black/50 text-white border border-[#333] hover:border-primary-500 hover:text-primary-500 transition-colors opacity-100 md:opacity-0 group-hover:opacity-100 z-20"
             >
               <FaChevronLeft size={14} />
             </button>
             
             <button
               onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-black/50 text-white border border-[#333] hover:border-primary-500 hover:text-primary-500 transition-colors opacity-100 md:opacity-0 group-hover:opacity-100"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-black/50 text-white border border-[#333] hover:border-primary-500 hover:text-primary-500 transition-colors opacity-100 md:opacity-0 group-hover:opacity-100 z-20"
             >
               <FaChevronRight size={14} />
             </button>
 
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
               {images.map((_, idx) => (
                 <button
                   key={idx}
@@ -79,6 +94,12 @@ export default function Carousel({ images }) {
               onClick={() => setIsLightboxOpen(false)}
               className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
             >
+              {isLightboxLoading && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[205]">
+                  <FaSpinner className="animate-spin text-primary-500" size={48} />
+                </div>
+              )}
+
               <button 
                 onClick={() => setIsLightboxOpen(false)}
                 className="absolute top-6 right-6 text-white hover:text-red-500 transition-colors z-[210] bg-black/50 p-2 border border-[#333]"
@@ -98,7 +119,8 @@ export default function Carousel({ images }) {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="max-w-full max-h-full object-contain shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                onLoad={() => setIsLightboxLoading(false)}
+                className={`max-w-full max-h-full object-contain shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-[filter] duration-300 ${isLightboxLoading ? 'blur-md' : 'blur-0'}`}
                 onClick={(e) => e.stopPropagation()}
               />
 
