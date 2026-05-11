@@ -20,6 +20,16 @@ export default function Carousel({ images }) {
     setIsLightboxLoading(true);
   }, [currentIndex]);
 
+  // Preload all images for smooth transitions
+  useEffect(() => {
+    if (images && images.length > 0) {
+      images.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
+  }, [images]);
+
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
