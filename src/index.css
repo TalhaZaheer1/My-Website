@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #e0ffe0;
+  --color-primary-100: #b3ffb3;
+  --color-primary-200: #80ff80;
+  --color-primary-300: #4dff4d;
+  --color-primary-400: #1aff1a;
+  --color-primary-500: #00ff00;
+  --color-primary-600: #00cc00;
+  --color-primary-700: #009900;
+  --color-primary-800: #006600;
+  --color-primary-900: #003300;
+  --color-primary-950: #001a00;
+  
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#050505] text-[#b0b0b0] antialiased font-mono selection:bg-primary-500/30 selection:text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-[#050505] border-l border-slate-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 hover:bg-primary-500/50 transition-colors rounded-none;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply text-primary-500 drop-shadow-[0_0_8px_rgba(0,255,0,0.5)];
+  }
+  
+  .terminal-card {
+    @apply bg-[#0a0a0a] border border-[#1f1f1f] shadow-none rounded-sm;
+  }
+  
+  .terminal-window {
+    @apply bg-[#0a0a0a] border border-[#333] shadow-[4px_4px_0px_0px_rgba(0,255,0,0.1)] rounded-sm;
+  }
+  
+  .terminal-header {
+    @apply bg-[#111] border-b border-[#333] px-4 py-2 flex items-center justify-between text-xs text-slate-500;
+  }
+}
+
+/* Scanline effect */
+.scanlines {
+  position: relative;
+}
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 50;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
